@@ -27,7 +27,7 @@ async function login(req, res) {
     let user = result.rows[0];
     const match = await bcrypt.compare(password, user.password);
     if (match) {
-      var token = jwt.sign(user, "shhhhh");
+      var token = jwt.sign(user, "users");
       res.send({ success: true, token, user });
     } else res.send({ success: false, msg: "Wrong password!" });
   }
@@ -42,7 +42,7 @@ async function getProducts(req, res) {
   async function addOrders(req, res) {
     let { items, userID,address} = req.body;
     const result = await client.query(`INSERT INTO orders (items, userID,address)
-    VALUES ('${items}', '${userID}', '${address}') RETURNING *`);
+    VALUES ('${items}', '${userID}', '${address}') RETURNING items, userID,address `);
     res.send(result.rows);
   }
 
