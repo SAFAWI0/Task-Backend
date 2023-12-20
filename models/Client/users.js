@@ -15,12 +15,11 @@ async function register(req, res) {
   });
 }
 
-
-
 async function login(req, res) {
   let { username, password } = req.body;
   const result = await client.query(
-    `SELECT * FROM users WHERE username = '${username}'`);
+    `SELECT * FROM users WHERE username = '${username}'`
+  );
   if (result.rows.length === 0)
     res.send({ success: false, msg: "User not found" });
   else {
@@ -33,20 +32,24 @@ async function login(req, res) {
   }
 }
 
-
 async function getProducts(req, res) {
-    const result = await client.query(`SELECT * FROM products`);
-    res.send(result.rows);
-  }
+  let search = req.query.search || "";
+  let page = parseInt(req.query.page) || 1;
+  const PAGE_SIZE = 5;
+  const offset = (page - 1) * PAGE_SIZE;
+  const result = await client.query(
+    `SELECT * FROM products WHERE CONCAT(name, price, discount,active ) ILIKE '%${search}%' LIMIT ${PAGE_SIZE} OFFSET ${offset} `
+  );
 
-  async function addOrders(req, res) {
-    let { items, userID,address} = req.body;
-    const result = await client.query(`INSERT INTO orders (items, userID,address)
+  res.send(result.rows);
+}
+
+async function addOrders(req, res) {
+  let { items, userID, address } = req.body;
+  const result = await client.query(`INSERT INTO orders (items, userID,address)
     VALUES ('${items}', '${userID}', '${address}') RETURNING items, userID,address `);
-    res.send(result.rows);
-  }
-
-
+  res.send(result.rows);
+}
 
 module.exports = {
   register,
