@@ -5,7 +5,6 @@ const products = require("./routers/Dashboard/products");
 const admin = require("./routers/Dashboard/admins");
 const order = require("./routers/Dashboard/orders");
 const user = require("./routers/Client/users")
-
 const checkAuthA = require("./middleware/middlewareAdmins");
 app.use(express.json());
 
