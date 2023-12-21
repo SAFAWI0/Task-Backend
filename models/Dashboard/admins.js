@@ -4,9 +4,7 @@ var jwt = require("jsonwebtoken");
 
 async function register(req, res) {
   let { name, department, username, password } = req.body;
-
   const hashPasswod = bcrypt.hashSync(password, 10);
-
   const result =
     await client.query(`INSERT INTO admins ( name,department,username, password)
     VALUES ('${name}', '${department}', '${username}', '${hashPasswod}') RETURNING *`);

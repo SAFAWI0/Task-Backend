@@ -32,6 +32,8 @@ async function login(req, res) {
   }
 }
 
+
+
 async function getProducts(req, res) {
   let search = req.query.search || "";
   let page = parseInt(req.query.page) || 1;
@@ -43,6 +45,10 @@ async function getProducts(req, res) {
 
   res.send(result.rows);
 }
+
+
+
+
 
 async function addOrders(req, res) {
   let { items, userID, address } = req.body;
